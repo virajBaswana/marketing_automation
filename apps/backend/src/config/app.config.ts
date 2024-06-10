@@ -17,3 +17,7 @@ export const FB_STATE =
   "qeiourghdsiuyfghaisrgiyufguayksgfuakhjsgfuyasgfuaguyfkgad";
 export const FB_CLIENT_SECRET =
   process.env.FB_CLIENT_SECRET || "97b32fa7e2aa3a51e699abdb6133964c";
+export const COOKIE_SECRET =
+  process.env.COOKIE_SECRET ||
+  "sadfgbklhsdgflkuygsaelfigsahjiylgfhiuaowuiehfioysuy";
+export const NODE_ENV = process.env.NODE_ENV || "development";
