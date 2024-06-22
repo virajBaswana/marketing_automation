@@ -2,22 +2,27 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export const PORT = process.env.PORT || "3000";
-export const FB_BASE_URL =
-  process.env.FB_BASE_URL || "https://graph.facebook.com/";
-export const FB_TOKEN_URL =
-  process.env.FB_TOKEN_URL ||
+export const META_BASE_URL =
+  process.env.META_BASE_URL || "https://graph.facebook.com";
+
+export const META_TOKEN_URL =
+  process.env.META_TOKEN_URL ||
   "https://graph.facebook.com/v20.0/oauth/access_token";
 
-export const FB_CLIENT_ID = process.env.FB_CLIENT_ID || "315609364823245";
-export const FB_REDIRECT_URI =
-  process.env.FB_REDIRECT_URI || "http://localhost:3000/fb";
-export const FB_CONFIG_ID = process.env.FB_CONFIG_ID || "489540216979730";
-export const FB_STATE =
-  process.env.FB_STATE ||
+export const META_AUTH_URL =
+  process.env.META_AUTH_URL || "https://www.facebook.com/v20.0/dialog/oauth";
+
+export const META_CLIENT_ID = process.env.META_CLIENT_ID || "1395069584348157";
+export const META_REDIRECT_URL =
+  process.env.META_REDIRECT_URL || "http://localhost:3000/metaGraphAuthRedirect";
+export const META_CONFIG_ID = process.env.META_CONFIG_ID || "1240117760303364";
+export const META_STATE =
+  process.env.META_STATE ||
   "qeiourghdsiuyfghaisrgiyufguayksgfuakhjsgfuyasgfuaguyfkgad";
-export const FB_CLIENT_SECRET =
-  process.env.FB_CLIENT_SECRET || "97b32fa7e2aa3a51e699abdb6133964c";
+export const META_CLIENT_SECRET =
+  process.env.META_CLIENT_SECRET || "33533a1d73ec95d2fd4c0c430a6df3f1";
 export const COOKIE_SECRET =
   process.env.COOKIE_SECRET ||
   "sadfgbklhsdgflkuygsaelfigsahjiylgfhiuaowuiehfioysuy";
 export const NODE_ENV = process.env.NODE_ENV || "development";
+export const JWT_SECRET = process.env.JWT_SECRET || "jwt_secret";
