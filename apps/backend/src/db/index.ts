@@ -6,6 +6,7 @@ export function CheckDBConnection() {
     DbPool.connect((err, client, release) => {
       if (err) {
         console.error("Error connecting to the database:", err.stack);
+        console.log(err)
         reject(err);
       } else if (client) {
         const timeOfStartUp = client.query(`SELECT NOW();`);

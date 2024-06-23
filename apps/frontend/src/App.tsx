@@ -6,6 +6,7 @@ function App() {
   
   return (
     <>
+    {FB_AUTH_URL}
       <button onClick={()=> window.open(FB_AUTH_URL)}>Login</button>
     </>
   )

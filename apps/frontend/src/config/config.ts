@@ -16,3 +16,4 @@ const params = new URLSearchParams({
 });
 
 export const FB_AUTH_URL = FB_AUTH_BASE_URL + "?" + params;
+console.log(FB_AUTH_BASE_URL)
