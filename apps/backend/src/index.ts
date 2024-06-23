@@ -14,11 +14,12 @@ app.use(cookieParser())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+
 app.use("/auth", AuthRouter)
 app.use("/metaGraph" , Authenticate , MetaGraphRouter)
 
 app.get("/metaGraphAuthRedirect" , SaveMetaToken)
-
+app.get("/healthCheck" , (req , res) => res.json({status : "up"}))
 
 app.use(HandleError);
 
