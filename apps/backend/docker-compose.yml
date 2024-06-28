@@ -30,6 +30,7 @@ services:
     image: nginx
     depends_on:
       - backend
+      - certbot
     restart: always
     ports:
       - "80:80"
