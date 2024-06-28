@@ -53,6 +53,7 @@ export const SaveMetaToken = async (
       code: req.query.code as string,
     });
     const tokenUrl = META_TOKEN_URL + "?" + params;
+    console.log(tokenUrl)
     const token = await axios.get(tokenUrl);
     console.log("token    sadfgas", token.data);
     const metaToken = await DB.insert(MetaUserTable)

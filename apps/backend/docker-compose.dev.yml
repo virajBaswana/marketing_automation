@@ -10,34 +10,38 @@ services:
       POSTGRES_Db: postgres
 
   backend:
-    build: .
+    build: 
+      context: ./
+      dockerfile: Dockerfile.dev
     depends_on:
       - db
     restart: always
     env_file: ./.env
     ports:
       - 3000:3000
-    environment:
-      - DB_HOST=db
-      - DB_USER=postgres
-      - DB_PASSWORD=postgres
-      - DB_NAME=postgres
-      - DB_PORT=5432
+    # environment:
+    #   - DB_HOST=db
+    #   - DB_USER=postgres
+    #   - DB_PASSWORD=postgres
+    #   - DB_NAME=postgres
+    #   - DB_PORT=5432
     stdin_open: true
     tty: true
-    
-  nginx:
-    image: nginx
-    depends_on:
-      - backend
-    restart: always
-    ports:
-      - "80:80"
-      - "443:443"
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./certbot/conf:/etc/letsencrypt
-      - ./certbot/www:/var/www/certbot
+      - .:/usr/src/app/
+    
+  # nginx:
+  #   image: nginx
+  #   depends_on:
+  #     - backend
+  #   restart: always
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes:
+  #     - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+  #     - ./certbot/conf:/etc/letsencrypt
+  #     - ./certbot/www:/var/www/certbot
 
   # certbot:
   #   image: certbot/certbot
