@@ -18,6 +18,17 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/auth", AuthRouter)
 app.use("/metaGraph" , Authenticate , MetaGraphRouter)
 
+app.get("/meta/webhook" , (req : any, res) => {
+  console.log(req.query)
+  if(req.query?.hub?.verify_token === "token_for_verification"){
+    console.log("reached")
+    return res.send(req.query["hub"]["challenge"]).status(200)
+    
+    }
+  console.log("nope")
+  return res.send("not cool").status(500)
+})
+
 app.get("/metaGraphAuthRedirect" , SaveMetaToken)
 app.get("/healthCheck" , (req , res) => res.json({status : "up"}))
 app.get("/" , (req , res) => {

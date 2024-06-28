@@ -14,5 +14,6 @@ export const HandleError = (
     name: err.name,
     stack: err.stack,
   };
+  console.log(err)
   return res.status(response.status).json(response);
 };
