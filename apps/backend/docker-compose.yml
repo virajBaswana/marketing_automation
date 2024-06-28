@@ -1,5 +1,4 @@
 services:
-
   db:
     image: postgres
     restart: always
@@ -28,16 +27,25 @@ services:
     tty: true
     
   nginx:
+    image: nginx
     depends_on:
       - backend
     restart: always
-    build:
-      dockerfile: Dockerfile.nginx
-      context: ./
     ports:
       - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
 
-
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes: 
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    command: certonly --webroot -w /var/www/certbot --force-renewal --email virajbaswana@gmail.com -d app.virajbaswana.com --agree-tos
 
   adminer:
     image: adminer
