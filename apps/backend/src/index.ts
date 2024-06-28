@@ -20,7 +20,10 @@ app.use("/metaGraph" , Authenticate , MetaGraphRouter)
 
 app.get("/metaGraphAuthRedirect" , SaveMetaToken)
 app.get("/healthCheck" , (req , res) => res.json({status : "up"}))
-
+app.get("/" , (req , res) => {
+  console.log("check")
+  res.json({headers : res.getHeaders})
+})
 app.use(HandleError);
 
 Promise.all([CheckDBConnection()])
