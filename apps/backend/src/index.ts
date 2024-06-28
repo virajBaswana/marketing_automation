@@ -20,7 +20,7 @@ app.use("/metaGraph" , Authenticate , MetaGraphRouter)
 
 app.get("/meta/webhook" , (req : any, res) => {
   console.log(req.query)
-  if(req.query?.hub?.verify_token === "token_for_verification"){
+  if(req.query["hub.verify_token"] === "token_for_verification"){
     console.log("reached")
     return res.send(req.query["hub.challenge"]).status(200)
     
