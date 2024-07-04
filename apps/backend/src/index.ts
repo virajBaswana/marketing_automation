@@ -22,21 +22,19 @@ app.use("/auth", AuthRouter)
 app.use("/metaGraph" , Authenticate , MetaGraphRouter)
 
 app.get("/meta/webhook" , (req : any, res) => {
-  console.log("req.query" , req.query)
-  // console.log("req" , req)
   if(req.query["hub.verify_token"] === "token_for_verification"){
-    console.log("reached")
     return res.send(req.query["hub.challenge"]).status(200)
     
     }
-  console.log("nope")
-  console.log("nope")
   return res.send("not cool").status(500)
 })
 
 app.post("/meta/webhook" , (req , res) => {
   console.log(req.body)
-  console.log("req" , req)
+  // console.log("req" , req)
+  // save body in db
+  // match against key word
+  // send dm
   res.send("thanks")
 })
 

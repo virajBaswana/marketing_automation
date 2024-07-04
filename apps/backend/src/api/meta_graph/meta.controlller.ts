@@ -53,7 +53,7 @@ export const SaveMetaToken = async (
       code: req.query.code as string,
     });
     const tokenUrl = META_TOKEN_URL + "?" + params;
-    console.log(tokenUrl)
+    console.log(tokenUrl);
     const token = await axios.get(tokenUrl);
     console.log("token    sadfgas", token.data);
     const metaToken = await DB.insert(MetaUserTable)
@@ -122,8 +122,9 @@ export const GetMetaPagesAuth = async (
 
     console.log("pagesAndInsta", pagesAndInsta);
 
-    const savePagesAndInsta = await DB.insert(MetaPageTable).values(pagesAndInsta).returning()
-
+    const savePagesAndInsta = await DB.insert(MetaPageTable)
+      .values(pagesAndInsta)
+      .returning();
 
     let resp: JsonSuccessResponse = SuccessJSONResponse(
       "pages, page tokens and insta ids collected",
@@ -132,6 +133,151 @@ export const GetMetaPagesAuth = async (
     );
     return res.status(resp.status).json(resp);
   } catch (error) {
+    next(new CustomError("Could not save tokens", 500, error as Error));
+  }
+};
+export const SubscribeToWebhooks = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    let url = META_BASE_URL + "/v20.0/";
+
+    const pageToken = await DB.select()
+      .from(MetaPageTable)
+      .where(
+        eq(MetaPageTable.user_id, parseInt(req.context.user_id as string))
+      );
+    let token = pageToken[0].page_token;
+    let page_id = pageToken[0].page_id;
+
+    const meta = await axios.post(
+      url + `${page_id}/subscribed_apps`,
+      {},
+      {
+        headers: { Authorization: `Bearer ${token}` },
+        params: { subscribed_fields: "feed,messages" },
+      }
+    );
+    console.log("meta", meta.data);
+
+    let resp: JsonSuccessResponse = SuccessJSONResponse(
+      "pages, page tokens and insta ids collected",
+      201,
+      [meta.data]
+    );
+    return res.status(resp.status).json(resp);
+  } catch (error) {
+    console.log(error);
+    next(new CustomError("Could not save tokens", 500, error as Error));
+  }
+};
+export const CheckInstaMessenger = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    let url = META_BASE_URL + "/v20.0/";
+
+    const pageToken = await DB.select()
+      .from(MetaPageTable)
+      .where(
+        eq(MetaPageTable.user_id, parseInt(req.context.user_id as string))
+      );
+    let token = pageToken[0].page_token;
+    let page_id = pageToken[0].page_id;
+
+    const meta = await axios.get(url + `${page_id}/conversations`, {
+      headers: { Authorization: `Bearer ${token}` },
+      params: { platform: "instagram" },
+    });
+    console.log("meta", meta.data);
+
+    let resp: JsonSuccessResponse = SuccessJSONResponse(
+      "insta messenger status validated",
+      200,
+      [meta.data]
+    );
+    return res.status(resp.status).json(resp);
+  } catch (error) {
+    console.log(error);
+    next(new CustomError("Could not save tokens", 500, error as Error));
+  }
+};
+export const SendInstaMessagge = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    let url = META_BASE_URL + "/v20.0/";
+
+    const recipientId = req.params.recipient_id;
+
+    const pageToken = await DB.select()
+      .from(MetaPageTable)
+      .where(
+        eq(MetaPageTable.user_id, parseInt(req.context.user_id as string))
+      );
+    let token = pageToken[0].page_token;
+    let page_id = pageToken[0].page_id;
+
+    const meta = await axios.post(
+      url + `${page_id}/me/messages`,
+      {
+        recipient: {
+          id: recipientId,
+        },
+        message: {
+          attachment: {
+            type: "template",
+            payload: {
+              template_type: "generic",
+              elements: [
+                {
+                  title: "Welcome!",
+                  image_url:
+                    "https://github.com/fbsamples/original-coast-clothing/blob/main/public/looks/male-work.jpg",
+                  subtitle: "We have the right hat for everyone.",
+                  default_action: {
+                    type: "web_url",
+                    url: "https://www.originalcoastclothing.com",
+                  },
+                  buttons: [
+                    {
+                      type: "web_url",
+                      url: "https://www.originalcoastclothing.com",
+                      title: "View Website",
+                    },
+                    {
+                      type: "postback",
+                      title: "Start Chatting",
+                      payload: "DEVELOPER_DEFINED_PAYLOAD",
+                    },
+                  ],
+                },
+              ],
+            },
+          },
+        },
+      },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+        // params: { platform: "instagram" },
+      }
+    );
+    console.log("meta", meta.data);
+
+    let resp: JsonSuccessResponse = SuccessJSONResponse(
+      "insta messenger status validated",
+      200,
+      [meta.data]
+    );
+    return res.status(resp.status).json(resp);
+  } catch (error) {
+    console.log(error);
     next(new CustomError("Could not save tokens", 500, error as Error));
   }
 };
